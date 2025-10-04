@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程栋梁的作品集 | DONGLIANG CHENG'S PORTFOLIO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root {
+            /* 调整回淡黄色背景，更柔和的米白到浅黄渐变 */
+            --color-primary-bg: #FCFBF7; /* 接近纯白，基础 */
+            --color-secondary-bg-gradient-start: #FFFDEE; /* 亮米黄 */
+            --color-secondary-bg-gradient-end: #F7F5EC; /* 稍深浅黄 */
+            
+            /* 保持原有的苹果色系，但确保在浅色背景下能突出 */
+            --color-red: #FF3B30;     
+            --color-yellow: #FFCC00;  
+            --color-blue: #007AFF;    
+            --color-green: #34C759;   
+            
+            /* 文本颜色适配浅色背景 */
+            --color-text-dark: #1C1C1E; 
+            --color-text-light: #FFFFFF; 
+            
+            /* 玻璃效果边框和背景，适配浅色背景 */
+            --color-glass-border: rgba(255, 255, 255, 0.7); 
+            --color-glass-bg: rgba(255, 255, 255, 0.5); 
+            
+            /* 针对浅黄色背景优化的光晕颜色，对比度更高，亮度适中 */
+            /* 增强科技感和现代感的颜色 */
+            --color-glow-blue: rgba(0, 170, 255, 0.8); /* 更亮的电光蓝 */
+            --color-glow-green: rgba(0, 255, 170, 0.8); /* 霓虹绿 */
+            --color-glow-white: rgba(255, 255, 255, 0.9); 
+            --color-glow-yellow: rgba(255, 220, 0, 0.8); /* 亮黄 */
+            --color-glow-red: rgba(255, 59, 48, 0.7);   
+            --color-glow-purple: rgba(170, 0, 255, 0.8); /* 赛博朋克紫 */
+            --color-glow-cyan: rgba(0, 255, 255, 0.8);   /* 亮青色 */
+            --color-glow-pink: rgba(255, 0, 170, 0.8); /* 品红 */
+
+            /* 新增火花颜色，保持在淡黄背景下可见，更亮更鲜明 */
+            --color-spark-gold: rgba(255, 215, 0, 1); /* 纯金 */
+            --color-spark-orange: rgba(255, 140, 0, 1); /* 亮橙 */
+            --color-spark-red: rgba(255, 69, 0, 1); /* 亮红橙 */
+            --color-spark-cyan: rgba(0, 255, 255, 1); /* 亮青 */
+            --color-spark-magenta: rgba(255, 0, 255, 1); /* 亮品红 */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--color-text-dark);
+            background: linear-gradient(135deg, var(--color-primary-bg) 0%, var(--color-secondary-bg-gradient-end) 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden; 
+            perspective: 1000px; 
+        }
+
+        /* --- Background Animated Wrapper (for particles and light streams) --- */
+        .background-animated-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* 确保在内容下方 */
+            /* 移除 pointer-events: none; 让它可以捕获点击事件 */
+        }
+
+        /* Mouse Follower Glow - 更亮的电光蓝 */
+        .mouse-glow {
+            position: absolute;
+            width: 90px; /* 稍微大一点 */
+            height: 90px;
+            background: radial-gradient(circle at center, rgba(0, 170, 255, 0.25) 0%, transparent 70%); /* 更亮的蓝 */
+            border-radius: 50%;
+            pointer-events: none; /* 确保光晕本身不影响鼠标事件 */
+            transform: translate(-50%, -50%); 
+            filter: blur(30px); /* 稍微强一点的模糊 */
+            opacity: 0; 
+            transition: opacity 0.5s ease;
+            will-change: transform, opacity;
+        }
+        body.mouse-active .mouse-glow {
+            opacity: 1; 
+        }
+
+        /* Particles - More defined, less blur in general, stronger glow */
+        .particle {
+            position: absolute;
+            background: var(--particle-color, #FFFFFF); /* 粒子颜色可变 */
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloatFade var(--duration) infinite ease-in-out var(--delay);
+            box-shadow: 
+                0 0 8px var(--particle-color-shadow, rgba(0, 170, 255, 0.6)), /* 更强的光晕 */
+                0 0 15px var(--particle-color-shadow-strong, rgba(0, 170, 255, 0.4)), 
+                0 0 25px rgba(255, 255, 255, 0.3); /* 增加白色核心光 */
+            filter: blur(var(--blur-size, 0.5px)); /* 降低模糊度，更锐利 */
+            will-change: transform, opacity, box-shadow; 
+            transition: transform 0.07s linear; 
+            pointer-events: none; /* 粒子本身不影响鼠标事件 */
+        }
+
+        /* Pulsing Particle Effect - Stronger but elegant pulse */
+        .particle.pulse {
+            animation: particleFloatFade var(--duration) infinite ease-in-out var(--delay), 
+                       particlePulse var(--pulse-duration) infinite alternate var(--pulse-delay);
+        }
+
+        @keyframes particlePulse {
+            0% { 
+                transform: scale(1); 
+                box-shadow: 0 0 8px var(--particle-color-shadow, rgba(0, 170, 255, 0.6)); 
+                opacity: 0.7; 
+            }
+            50% { 
+                transform: scale(1.8); /* 更大的脉冲 */
+                box-shadow: 
+                    0 0 20px var(--particle-color-shadow-strong, rgba(0, 170, 255, 0.9)), /* 更强的脉冲光晕 */
+                    0 0 40px var(--color-glow-white),
+                    0 0 60px rgba(255, 255, 255, 0.6); 
+                opacity: 1; /* 完全不透明 */
+            }
+            100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 8px var(--particle-color-shadow, rgba(0, 170, 255, 0.6)); 
+                opacity: 0.7; 
+            }
+        }
+
+        /* Light Stream/Line Effect - Fine, elegant beams */
+        .light-line {
+            position: absolute;
+            height: var(--line-thickness); 
+            background: linear-gradient(90deg, transparent 0%, var(--line-color) 50%, transparent 100%);
+            filter: blur(var(--blur-size, 1px)); /* 降低模糊度，更锐利 */
+            opacity: 0;
+            animation: lineTravel var(--duration) infinite linear var(--delay), 
+                       lineFade var(--fade-duration) infinite alternate var(--fade-delay);
+            transform-origin: left center;
+            box-shadow: 0 0 10px var(--line-color), 0 0 25px var(--line-color); /* 更强的光晕 */
+            will-change: transform, opacity;
+            pointer-events: none; /* 线条本身不影响鼠标事件 */
+        }
+
+        /* Specific Line type for more dynamic movement */
+        .light-line.dynamic {
+            animation-name: lineTravelDynamic;
+        }
+
+        /* Spark Particle for click effect - 更亮更鲜明 */
+        .spark-particle {
+            position: absolute;
+            background-color: var(--spark-color);
+            border-radius: 50%;
+            pointer-events: none; /* 火花本身不影响鼠标事件 */
+            opacity: 0;
+            animation: sparkFadeOut var(--duration) ease-out forwards;
+            box-shadow: 0 0 8px var(--spark-color), 0 0 20px var(--spark-color), 0 0 40px rgba(255, 255, 255, 0.6); /* 更强的光晕 */
+            will-change: transform, opacity;
+        }
+
+        @keyframes sparkFadeOut {
+            0% { 
+                transform: translate(0px, 0px) scale(0.2); 
+                opacity: 1; 
+                filter: blur(0px); 
+            }
+            20% { 
+                transform: translate(var(--dx), var(--dy)) scale(1); 
+                opacity: 1; 
+                filter: blur(0.5px); /* 稍微模糊 */
+            }
+            100% { 
+                transform: translate(var(--dx-end), var(--dy-end)) scale(0); 
+                opacity: 0; 
+                filter: blur(3px); /* 结束时模糊 */
+            }
+        }
+
+        @keyframes particleFloatFade {
+            0% { transform: translate(var(--x-start), var(--y-start)) scale(0); opacity: 0; }
+            10% { opacity: var(--o); transform: translate(var(--x-start), var(--y-start)) scale(var(--s)); }
+            50% { opacity: var(--o); transform: translate(var(--x-mid), var(--y-mid)) scale(var(--s)); }
+            90% { opacity: var(--o); }
+            100% { transform: translate(var(--x-end), var(--y-end)) scale(0); opacity: 0; }
+        }
+
+        @keyframes lineTravel {
+            0% { transform: translate(var(--x-start), var(--y-start)) rotate(var(--r)) scaleX(0); opacity: 0; }
+            10% { opacity: var(--o); transform: translate(var(--x-start), var(--y-start)) rotate(var(--r)) scaleX(1); }
+            80% { opacity: var(--o); transform: translate(var(--x-end), var(--y-end)) rotate(var(--r)) scaleX(1); }
+            100% { transform: translate(var(--x-end), var(--y-end)) rotate(var(--r)) scaleX(0); opacity: 0; }
+        }
+
+        @keyframes lineTravelDynamic {
+            0% { transform: translate(var(--x-start), var(--y-start)) rotate(var(--r)) scaleX(0); opacity: 0; }
+            10% { opacity: var(--o); transform: translate(var(--x-start), var(--y-start)) rotate(var(--r)) scaleX(1); }
+            50% { 
+                opacity: var(--o); 
+                transform: translate(var(--x-mid), var(--y-mid)) rotate(var(--r-mid)) scaleX(var(--s-mid, 1)); 
+            } 
+            90% { opacity: var(--o); transform: translate(var(--x-end), var(--y-end)) rotate(var(--r-end)) scaleX(1); }
+            100% { transform: translate(var(--x-end), var(--y-end)) rotate(var(--r-end)) scaleX(0); opacity: 0; }
+        }
+
+        @keyframes lineFade {
+            0% { opacity: 0.2; } /* 基础亮度 */
+            50% { opacity: 0.8; } /* 峰值亮度 */
+            100% { opacity: 0.2; }
+        }
+
+
+        .container {
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* --- Hero Section / Personal Info Panel --- */
+        .hero-panel {
+            background: var(--color-glass-bg);
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 25px;
+            padding: 30px 70px;
+            margin-bottom: 80px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: panelEntrance 1.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            transform: translateY(-80px);
+            opacity: 0;
+            box-shadow: 0 0 30px rgba(0, 122, 255, 0.08), 0 0 60px rgba(0, 122, 255, 0.04);
+            min-width: 800px;
+            transition: all 0.5s ease; 
+        }
+
+        .hero-panel:hover {
+            box-shadow: 0 0 50px rgba(0, 122, 255, 0.15), 0 0 100px rgba(0, 122, 255, 0.08), 0 0 150px rgba(0, 255, 255, 0.05);
+            transform: translateY(-5px) scale(1.01);
+        }
+
+        .hero-panel::before, .hero-panel::after {
+            content: '';
+            position: absolute;
+            width: 100px; 
+            height: 100px;
+            background: radial-gradient(circle at center, rgba(0, 122, 255, 0.1) 0%, transparent 70%); 
+            border-radius: 50%;
+            animation: cornerGlow 10s infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(10px); 
+        }
+        .hero-panel::before { top: -30px; right: -30px; }
+        .hero-panel::after { bottom: -30px; left: -30px; background: radial-gradient(circle at center, rgba(52, 199, 89, 0.1) 0%, transparent 70%); animation-delay: 2s; animation-direction: alternate-reverse; }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            letter-spacing: 8px;
+            margin-bottom: 30px;
+            font-weight: 800;
+            color: var(--color-text-dark);
+            position: relative;
+            z-index: 2;
+            animation: nameGlowPulse 3s infinite alternate, textDepthShift 5s infinite alternate;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.08), 0 0 15px rgba(0, 122, 255, 0.05); 
+        }
+
+        @keyframes textDepthShift {
+            0%, 100% { transform: translateZ(0); text-shadow: 0 0 8px rgba(0, 0, 0, 0.08), 0 0 15px rgba(0, 122, 255, 0.05); }
+            50% { transform: translateZ(5px); text-shadow: 0 0 12px rgba(0, 0, 0, 0.12), 0 0 20px rgba(0, 122, 255, 0.08); }
+        }
+
+        .hero-content h1::before {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 100%;
+            max-width: 400px;
+            height: 4px;
+            background: linear-gradient(to right, var(--color-red), var(--color-yellow), var(--color-blue), var(--color-green));
+            border-radius: 2px;
+            animation: lineExpand 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards 0.8s;
+        }
+
+        .personal-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 25px 100px;
+            font-size: 1.2rem;
+            margin-top: 40px;
+            color: var(--color-text-dark);
+            font-weight: 600;
+        }
+
+        .personal-info span {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            position: relative;
+            padding: 8px 0;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: default;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: personalInfoEntry 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+        }
+        .personal-info span:nth-child(1) { animation-delay: 1.5s; }
+        .personal-info span:nth-child(2) { animation-delay: 1.7s; }
+        .personal-info span:nth-child(3) { animation-delay: 1.9s; }
+
+        @keyframes personalInfoEntry {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .personal-info span:hover {
+            color: var(--color-blue);
+            transform: translateY(-5px) scale(1.02);
+            text-shadow: 0 0 8px rgba(0, 122, 255, 0.15); 
+        }
+        .personal-info span .icon-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .personal-info span .english-text {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .personal-info i {
+            font-size: 1.8rem;
+            color: var(--color-red);
+            transition: all 0.4s ease;
+        }
+        .personal-info span:hover i {
+            color: var(--color-yellow);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* --- Portfolio Grid / Dynamic Card Showcase --- */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 100px;
+            padding-bottom: 80px;
+            width: 100%;
+        }
+        
+        .portfolio-card {
+            background: var(--color-secondary-bg-gradient-start); 
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            transform: translateY(80px);
+            opacity: 0;
+            animation: cardSlideUp 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            border: 2px solid transparent;
+            min-width: 420px; /* 增大卡片最小宽度以容纳更长的标题 */
+        }
+
+        .portfolio-card:nth-child(1) { animation-delay: 0.8s; }
+        .portfolio-card:nth-child(2) { animation-delay: 1.0s; }
+        .portfolio-card:nth-child(3) { animation-delay: 1.2s; }
+
+        .portfolio-card:hover {
+            transform: translateY(-15px) scale(1.04); 
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15), 0 0 40px rgba(0, 122, 255, 0.15); 
+            border-color: var(--color-blue);
+            outline: 6px solid rgba(0, 122, 255, 0.1); 
+            outline-offset: 6px;
+        }
+        
+        .card-image {
+            height: 280px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            filter: brightness(0.9) contrast(1.05); 
+            transition: filter 0.7s ease;
+        }
+        
+        .portfolio-card:hover .card-image {
+            filter: brightness(1.0) contrast(1.1); 
+        }
+
+        .card-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 6px solid transparent;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.6s ease, border-color 0.6s ease;
+        }
+        .portfolio-card:hover .card-image::before {
+            border-color: rgba(255, 255, 255, 0.7); 
+            opacity: 1;
+        }
+
+        .card-image::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to right, var(--color-red), var(--color-yellow), var(--color-blue), var(--color-green));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .portfolio-card:hover .card-image::after {
+            transform: scaleX(1);
+        }
+
+        .card-title-overlay {
+            position: absolute;
+            bottom: 35px;
+            left: 35px;
+            color: var(--color-text-light);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.3rem; /* 调整标题字体大小 */
+            letter-spacing: 2px; /* 调整字间距 */
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 5px rgba(0, 122, 255, 0.2); 
+            transform: translateY(25px);
+            opacity: 0;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+            pointer-events: none;
+            white-space: normal; /* 允许文本换行 */
+            line-height: 1.2; /* 调整行高 */
+        }
+        .card-title-overlay .english-text {
+            display: block;
+            font-size: 0.6em; /* 调整英文标题字体大小 */
+            opacity: 0.8;
+            margin-top: 5px; /* 调整与中文标题的间距 */
+        }
+
+        .portfolio-card:hover .card-title-overlay {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .card-content {
+            padding: 35px 40px;
+            background: var(--color-secondary-bg-gradient-start); 
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .card-link {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 35px;
+            background: linear-gradient(45deg, var(--color-blue), var(--color-green));
+            color: var(--color-text-light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 6px 18px rgba(0, 122, 255, 0.2); 
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;
+            font-size: 1.1rem;
+        }
+        .card-link .english-text {
+            font-size: 0.8em;
+            opacity: 0.9;
+            margin-top: -5px;
+        }
+        
+        .card-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3); 
+            transform: skewX(-25deg);
+            transition: all 0.5s ease;
+        }
+
+        .card-link:hover::before {
+            left: 120%;
+        }
+
+        .card-link:hover {
+            transform: translateY(-8px) scale(1.02); 
+            box-shadow: 0 12px 30px rgba(52, 199, 89, 0.3);
+            background: linear-gradient(45deg, var(--color-red), var(--color-yellow));
+            border-color: var(--color-yellow);
+        }
+        
+        .card-link .icon-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .card-link i {
+            font-size: 1.4rem;
+            transition: transform 0.4s ease;
+        }
+        
+        .card-link:hover i {
+            transform: translateX(10px) rotate(10deg); 
+        }
+        
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 100px;
+            width: 100%;
+            color: var(--color-text-dark);
+            font-size: 1rem;
+            letter-spacing: 0.6px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.85; 
+            animation: fadeIn 1.5s ease forwards 2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.85; }
+        }
+        
+        /* --- General Animations --- */
+        @keyframes panelEntrance {
+            from { opacity: 0; transform: translateY(-100px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes nameGlowPulse {
+            0% { text-shadow: 0 0 8px rgba(0, 0, 0, 0.08), 0 0 15px rgba(0, 122, 255, 0.05); }
+            50% { text-shadow: 0 0 15px rgba(0, 0, 0, 0.12), 0 0 25px rgba(0, 122, 255, 0.08), 0 0 40px rgba(0, 255, 255, 0.05); }
+            100% { text-shadow: 0 0 8px rgba(0, 0, 0, 0.08), 0 0 15px rgba(0, 122, 255, 0.05); }
+        }
+
+        @keyframes lineExpand {
+            from { transform: translateX(-50%) scaleX(0); }
+            to { transform: translateX(-50%) scaleX(1); }
+        }
+
+        @keyframes cardSlideUp {
+            from { opacity: 0; transform: translateY(120px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes cornerGlow {
+            0% { transform: scale(0.9) rotate(0deg); opacity: 0.5; } 
+            50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; }
+            100% { transform: scale(0.9) rotate(360deg); opacity: 0.5; }
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1400px) { 
+            .portfolio-grid { gap: 80px; }
+            .hero-panel { min-width: 700px; padding: 25px 60px; }
+            .hero-content h1 { font-size: 3.5rem; letter-spacing: 6px; }
+            .personal-info { gap: 20px 80px; font-size: 1.1rem; }
+            .portfolio-card { min-width: 380px; /* 调整卡片宽度以适应小屏幕 */ }
+            .card-title-overlay { font-size: 2rem; /* 调整标题字体大小 */ }
+        }
+
+        @media (max-width: 1200px) {
+            .hero-panel { padding: 20px 40px; min-width: unset; margin-bottom: 60px; }
+            .hero-content h1 { font-size: 3rem; letter-spacing: 5px; }
+            .personal-info { font-size: 1rem; gap: 15px 50px; }
+            .personal-info i { font-size: 1.3rem; }
+            .portfolio-grid { gap: 60px; }
+            .portfolio-card { min-width: 330px; /* 进一步调整卡片宽度 */ }
+            .card-image { height: 250px; }
+            .card-title-overlay { font-size: 1.8rem; bottom: 25px; left: 25px; /* 调整标题位置和大小 */ }
+            .card-title-overlay .english-text { font-size: 0.55em; }
+            .card-content { padding: 25px 30px; }
+            .card-link { padding: 12px 30px; font-size: 1rem; }
+        }
+        
+        @media (max-width: 992px) {
+            body { padding: 30px 15px; }
+            .hero-panel { padding: 18px 25px; margin-bottom: 50px; }
+            .hero-content h1 { font-size: 2.5rem; letter-spacing: 3px; }
+            .personal-info { font-size: 0.95rem; flex-direction: column; gap: 10px; } 
+            .personal-info i { font-size: 1.2rem; }
+            .portfolio-grid { 
+                grid-template-columns: 1fr; 
+                justify-items: center; 
+                gap: 45px; 
+            }
+            .portfolio-card { max-width: 500px; width: 90%; min-width: unset; /* 在小屏幕下取消最小宽度限制，使用百分比 */ } 
+            .card-image { height: 220px; }
+            .card-title-overlay { font-size: 2rem; bottom: 20px; left: 20px; }
+            .card-title-overlay .english-text { font-size: 0.6em; }
+            .card-content { padding: 20px 25px; }
+            .card-link { padding: 10px 25px; font-size: 0.95rem; }
+            footer { padding: 30px 0; margin-top: 60px; }
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .hero-panel { padding: 15px 15px; margin-bottom: 40px; }
+            .hero-content h1 { font-size: 2rem; letter-spacing: 2px; }
+            .personal-info { font-size: 0.9rem; gap: 8px; }
+            .personal-info i { font-size: 1.1rem; }
+            .card-image { height: 180px; }
+            .card-title-overlay { font-size: 1.6rem; bottom: 15px; left: 15px; }
+            .card-title-overlay .english-text { font-size: 0.5em; }
+            .card-content { padding: 18px; }
+            .card-link { padding: 8px 20px; font-size: 0.9rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 1.6rem; letter-spacing: 1.5px; }
+            .card-title-overlay { font-size: 1.2rem; }
+            .card-title-overlay .english-text { font-size: 0.45em; margin-top: 3px; }
+            .card-image { height: 150px; }
+            .personal-info { gap: 6px; }
+            .card-link .english-text { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animated-wrapper" id="background-animated-wrapper">
+        <div class="mouse-glow" id="mouse-glow"></div>
+    </div>
+
+    <div class="container">
+        <header class="hero-panel" id="hero-panel">
+            <div class="hero-content">
+                <h1>程栋梁的作品集 | DONGLIANG CHENG'S PORTFOLIO</h1>
+                <div class="personal-info">
+                    <span>
+                        <div class="icon-wrapper"><i class="fas fa-university"></i> 云南财经大学</div>
+                        <span class="english-text">YNUFE</span>
+                    </span>
+                    <span>
+                        <div class="icon-wrapper"><i class="fas fa-graduation-cap"></i> 新闻学</div>
+                        <span class="english-text">JOURNALISM</span>
+                    </span>
+                    <span>
+                        <div class="icon-wrapper"><i class="fas fa-envelope"></i> 18637269378@163.com</div>
+                        <span class="english-text">EMAIL</span>
+                    </span>
+                </div>
+            </div>
+        </header>
+        
+        <main>
+            <div class="portfolio-grid">
+                <div class="portfolio-card" data-glow-color="var(--color-glow-blue)">
+                    <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1455390582262-044cdead277a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+                        <div class="card-title-overlay">
+                            文字类作品集
+                            <span class="english-text">TEXTUAL WORKS</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <a href="text.html" class="card-link">
+                            查看作品 
+                            <span class="english-text">VIEW WORKS</span>
+                            <span class="icon-container"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="portfolio-card" data-glow-color="var(--color-glow-green)">
+                    <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+                        <div class="card-title-overlay">
+                            平面设计类作品集
+                            <span class="english-text">GRAPHIC DESIGN WORKS</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <a href="design.html" class="card-link">
+                            查看作品 
+                            <span class="english-text">VIEW WORKS</span>
+                            <span class="icon-container"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="portfolio-card" data-glow-color="var(--color-glow-yellow)">
+                    <div class="card-image" style="background-image: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+                        <div class="card-title-overlay">
+                            视频类作品集
+                            <span class="english-text">VIDEO WORKS</span>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <a href="video.html" class="card-link">
+                            查看作品 
+                            <span class="english-text">VIEW WORKS</span>
+                            <span class="icon-container"><i class="fas fa-arrow-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <div class="copyright">© 2025 程栋梁 | CHENG DONGLIANG. ALL RIGHTS RESERVED.</div>
+        </footer>
+    </div>
+
+    <script>
+        fetch(location.href, {headers: {"ngrok-skip-browser-warning": "1"}});
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const wrapper = document.getElementById('background-animated-wrapper');
+            const heroPanel = document.getElementById('hero-panel');
+            const portfolioCards = document.querySelectorAll('.portfolio-card');
+            const mouseGlow = document.getElementById('mouse-glow');
+
+            const numParticles = 200; // 增加粒子数量
+            const numPulsingParticles = 30; // 增加脉冲粒子数量
+            const numLightLines = 25; // 增加光线数量
+
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let mouseMoved = false;
+
+            // Function to generate random values for animations
+            const getRandom = (min, max) => Math.random() * (max - min) + min;
+            // Get random color from a curated palette for lines and particles
+            const techColors = [
+                'var(--color-glow-blue)',
+                'var(--color-glow-green)',
+                'var(--color-glow-purple)',
+                'var(--color-glow-cyan)',
+                'var(--color-glow-pink)',
+                'var(--color-glow-yellow)' 
+            ];
+            const getTechColor = () => techColors[Math.floor(Math.random() * techColors.length)];
+
+            // Spark colors
+            const sparkColors = [
+                'var(--color-spark-gold)',
+                'var(--color-spark-orange)',
+                'var(--color-spark-red)',
+                'var(--color-spark-cyan)',
+                'var(--color-spark-magenta)'
+            ];
+            const getSparkColor = () => sparkColors[Math.floor(Math.random() * sparkColors.length)];
+
+
+            function createParticle(isPulsing = false) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                const particleColor = getTechColor();
+                p.style.setProperty('--particle-color', particleColor);
+                p.style.setProperty('--particle-color-shadow', particleColor.replace('0.8)', '0.9)'));
+                p.style.setProperty('--particle-color-shadow-strong', particleColor.replace('0.8)', '0.6)'));
+
+
+                if (isPulsing) {
+                    p.classList.add('pulse');
+                    p.style.setProperty('--pulse-duration', `${getRandom(2, 4)}s`); // 脉冲更快
+                    p.style.setProperty('--pulse-delay', `${getRandom(0, 4)}s`);
+                }
+                wrapper.appendChild(p);
+
+                const size = getRandom(2, 6); // 粒子尺寸范围
+                const xStart = getRandom(-10, 110); 
+                const yStart = getRandom(-10, 110);
+                const xEnd = getRandom(-10, 110); 
+                const yEnd = getRandom(-10, 110);
+                const xMid = getRandom(-10, 110); 
+                const yMid = getRandom(-10, 110);
+
+                const opacity = getRandom(0.6, 0.9); // 更高的不透明度
+                const duration = getRandom(15, 40); // 动画速度更快
+                const delay = getRandom(0, 15);
+                const scale = getRandom(1, 1.6); // 粒子大小变化范围
+                const blur = getRandom(0, 1); // 降低模糊度
+
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+
+                p.style.setProperty('--x-start', `${xStart}vw`);
+                p.style.setProperty('--y-start', `${yStart}vh`);
+                p.style.setProperty('--x-mid', `${xMid}vw`);
+                p.style.setProperty('--y-mid', `${yMid}vh`);
+                p.style.setProperty('--x-end', `${xEnd}vw`);
+                p.style.setProperty('--y-end', `${yEnd}vh`);
+
+                p.style.setProperty('--o', `${opacity}`);
+                p.style.setProperty('--s', `${scale}`);
+                p.style.setProperty('--duration', `${duration}s`);
+                p.style.setProperty('--delay', `${delay}s`);
+                p.style.setProperty('--blur-size', `${blur}px`);
+
+                if (Math.random() < 0.7) { // 更多粒子跟随鼠标
+                    p.dataset.mouseFollow = true;
+                    p.dataset.initialX = xStart; 
+                    p.dataset.initialY = yStart;
+                    p.dataset.currentPx = xStart * window.innerWidth / 100; 
+                    p.dataset.currentPy = yStart * window.innerHeight / 100;
+                    p.style.transform = `translate(${p.dataset.currentPx}px, ${p.dataset.currentPy}px) scale(${scale})`; 
+                }
+            }
+
+            function createLightLine() {
+                const ll = document.createElement('div');
+                ll.classList.add('light-line');
+                if (Math.random() < 0.8) { // 更多动态线条
+                    ll.classList.add('dynamic');
+                }
+                wrapper.appendChild(ll);
+
+                const width = getRandom(300, 600); // 线条更长
+                const thickness = getRandom(1.5, 3); // 线条更粗一点
+                const xStart = getRandom(-20, 120);
+                const yStart = getRandom(-20, 120);
+                const xEnd = getRandom(-20, 120);
+                const yEnd = getRandom(-20, 120);
+                const xMid = getRandom(-20, 120);
+                const yMid = getRandom(-20, 120);
+                
+                const rotationStart = getRandom(0, 360);
+                const rotationEnd = rotationStart + getRandom(-90, 90); // 更大的旋转范围
+                const rotationMid = rotationStart + getRandom(-180, 180); // 更大的中间旋转
+
+                const duration = getRandom(25, 60); // 动画速度更快
+                const delay = getRandom(0, 25);
+                const fadeDuration = getRandom(8, 15); // 闪烁更快
+                const fadeDelay = getRandom(0, 8);
+                const blur = getRandom(0.5, 2); // 降低模糊度，更锐利
+
+                const lineColor = getTechColor(); 
+
+                ll.style.width = `${width}px`;
+                ll.style.setProperty('--line-thickness', `${thickness}px`);
+                ll.style.setProperty('--line-color', lineColor);
+
+                ll.style.setProperty('--x-start', `${xStart}vw`);
+                ll.style.setProperty('--y-start', `${yStart}vh`);
+                ll.style.setProperty('--x-mid', `${xMid}vw`);
+                ll.style.setProperty('--y-mid', `${yMid}vh`);
+                ll.style.setProperty('--x-end', `${xEnd}vw`);
+                ll.style.setProperty('--y-end', `${yEnd}vh`);
+
+                ll.style.setProperty('--r', `${rotationStart}deg`);
+                ll.style.setProperty('--r-mid', `${rotationMid}deg`);
+                ll.style.setProperty('--r-end', `${rotationEnd}deg`);
+
+                ll.style.setProperty('--duration', `${duration}s`);
+                ll.style.setProperty('--delay', `${delay}s`);
+                ll.style.setProperty('--fade-duration', `${fadeDuration}s`);
+                ll.style.setProperty('--fade-delay', `${fadeDelay}s`);
+                ll.style.setProperty('--blur-size', `${blur}px`);
+                ll.style.setProperty('--s-mid', `${getRandom(0.8, 1.2)}`); 
+            }
+
+            // Function to create spark particles
+            function createSpark(x, y) {
+                const numSparks = getRandom(10, 20); // 更多火花
+                for (let i = 0; i < numSparks; i++) {
+                    const spark = document.createElement('div');
+                    spark.classList.add('spark-particle');
+                    wrapper.appendChild(spark);
+
+                    const size = getRandom(4, 10); // 火花尺寸范围
+                    const speed = getRandom(80, 200); // 散射速度更快
+                    const angle = getRandom(0, 2 * Math.PI); 
+
+                    const dx = Math.cos(angle) * getRandom(40, 120); // 散射距离
+                    const dy = Math.sin(angle) * getRandom(40, 120);
+
+                    const duration = getRandom(0.5, 1); // 火花消失更快
+
+                    spark.style.width = `${size}px`;
+                    spark.style.height = `${size}px`;
+                    spark.style.left = `${x}px`;
+                    spark.style.top = `${y}px`;
+                    spark.style.setProperty('--dx', `${dx}px`);
+                    spark.style.setProperty('--dy', `${dy}px`);
+                    spark.style.setProperty('--dx-end', `${dx * 1.8}px`); // 结束位置更远
+                    spark.style.setProperty('--dy-end', `${dy * 1.8}px`);
+                    spark.style.setProperty('--duration', `${duration}s`);
+                    spark.style.setProperty('--spark-color', getSparkColor());
+
+                    spark.addEventListener('animationend', () => {
+                        spark.remove();
+                    });
+                }
+            }
+
+
+            for (let i = 0; i < numParticles; i++) {
+                createParticle();
+            }
+
+            for (let i = 0; i < numPulsingParticles; i++) {
+                createParticle(true); 
+            }
+
+            for (let i = 0; i < numLightLines; i++) {
+                createLightLine();
+            }
+
+            // Mouse interaction for particles
+            function animateParticles() {
+                requestAnimationFrame(animateParticles);
+
+                document.querySelectorAll('.particle[data-mouse-follow="true"]').forEach(p => {
+                    const initialX_vw = parseFloat(p.dataset.initialX);
+                    const initialY_vh = parseFloat(p.dataset.initialY);
+                    const initialX_px = initialX_vw * window.innerWidth / 100;
+                    const initialY_px = initialY_vh * window.innerHeight / 100;
+
+                    let currentPx = parseFloat(p.dataset.currentPx);
+                    let currentPy = parseFloat(p.dataset.currentPy);
+
+                    const dx_mouse = mouseX - currentPx;
+                    const dy_mouse = mouseY - currentPy;
+                    const dist_mouse = Math.sqrt(dx_mouse * dx_mouse + dy_mouse * dy_mouse);
+
+                    const attractionStrength = 0.0005; // 鼠标吸引力更强
+                    const maxAttractionDistance = 300; // 吸引范围更大
+                    let forceX = 0;
+                    let forceY = 0;
+
+                    if (dist_mouse < maxAttractionDistance) {
+                        const attractionFactor = (1 - (dist_mouse / maxAttractionDistance)); 
+                        forceX = dx_mouse * attractionStrength * attractionFactor;
+                        forceY = dy_mouse * attractionStrength * attractionFactor;
+                    }
+                    
+                    const dx_initial = initialX_px - currentPx;
+                    const dy_initial = initialY_px - currentPy;
+                    const restoreStrength = 0.0008; // 恢复初始位置的速度更快
+                    forceX += dx_initial * restoreStrength;
+                    forceY += dy_initial * restoreStrength;
+
+                    currentPx += forceX;
+                    currentPy += forceY;
+
+                    p.dataset.currentPx = currentPx;
+                    p.dataset.currentPy = currentPy;
+
+                    p.style.transform = `translate(${currentPx}px, ${currentPy}px) scale(var(--s))`;
+                });
+            }
+            animateParticles();
+
+            // Mouse move for general glow
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                mouseMoved = true;
+                document.body.classList.add('mouse-active');
+                mouseGlow.style.left = `${mouseX}px`;
+                mouseGlow.style.top = `${mouseY}px`;
+            });
+
+            // Deactivate mouse glow after a short period of inactivity
+            let mouseMoveTimer;
+            document.addEventListener('mousemove', () => {
+                clearTimeout(mouseMoveTimer);
+                mouseMoveTimer = setTimeout(() => {
+                    document.body.classList.remove('mouse-active');
+                }, 500); 
+            });
+
+            // Click event for sparks - bind to wrapper directly
+            // 确保 wrapper 覆盖整个屏幕并且 z-index 正确
+            wrapper.addEventListener('click', (e) => {
+                createSpark(e.clientX, e.clientY);
+            });
+
+            // Card Hover Glow Effect
+            portfolioCards.forEach(card => {
+                let initialBoxShadow = card.style.boxShadow;
+                let initialOutline = card.style.outline;
+
+                card.addEventListener('mouseenter', () => {
+                    const glowColor = card.dataset.glowColor;
+                    card.style.transition = 'all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                    card.style.boxShadow = `0 25px 60px rgba(0, 0, 0, 0.15), 0 0 40px ${glowColor}, 0 0 80px ${glowColor.replace('0.8)', '0.4)')}`; 
+                    card.style.borderColor = glowColor;
+                    card.style.outline = `6px solid ${glowColor.replace('0.8)', '0.3)')}`; 
+                    card.style.outlineOffset = '6px';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transition = 'all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                    card.style.boxShadow = initialBoxShadow;
+                    card.style.borderColor = 'transparent';
+                    card.style.outline = initialOutline;
+                    card.style.outlineOffset = '0';
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
